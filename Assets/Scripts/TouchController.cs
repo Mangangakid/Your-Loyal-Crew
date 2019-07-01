@@ -18,6 +18,9 @@ public class TouchController : MonoBehaviour
     public float spinSpeed = 0.5f;
     public float touchRadius = 0.1f;
 
+    private float height;
+    private float width;
+
     public Vector2 tempCenter;
     public Vector2 rotationStart;
     public Vector2 rotator;
@@ -34,6 +37,8 @@ public class TouchController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        width = Screen.width / 2.0f;
+        height = Screen.height / 2.0f;
         Refresh();
     }
 
@@ -58,7 +63,7 @@ public class TouchController : MonoBehaviour
     //Camera move and character interaction
     private void TouchProcess()
     {
-        ViewRotation();
+        TwoFingers();
         if (Input.touchCount == 1)
         {
             if ((Input.GetTouch(0).phase == TouchPhase.Began)&& (!EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId)))
@@ -79,8 +84,7 @@ public class TouchController : MonoBehaviour
                         else
                         {
                             UnselectAll();
-                            hit.transform.gameObject.GetComponent<Character>().Select(true);
-                            //camFocus.transform.position = hit.transform.position;                            
+                            hit.transform.gameObject.GetComponent<Character>().Select(true);                            
                         }
                     }
                     else
@@ -135,9 +139,37 @@ public class TouchController : MonoBehaviour
         }
     }
 
-    private void ViewRotation()
+    private void TwoFingers()
     {
         if (Input.touchCount == 2)
+        {
+            StopCamera();
+            if (Input.GetTouch(0).phase == TouchPhase.Began)
+            {
+                tempCenter = Input.GetTouch(0).position;
+            }
+            if (Input.GetTouch(1).phase == TouchPhase.Began)
+            {
+                rotationStart = Input.GetTouch(1).position - tempCenter;
+            }
+            if (Input.GetTouch(0).phase == TouchPhase.Moved)
+            {
+                if(Vector3.Magnitude(tempCenter - Input.GetTouch(0).position) > touchRadius)
+                {
+                    float initialDistance = Vector3.Magnitude(rotationStart);
+                    camFollow.zoom += (initialDistance - Vector3.Magnitude(Input.GetTouch(1).position- Input.GetTouch(0).position))*Time.deltaTime;
+                }
+            }
+              if (Input.GetTouch(1).phase == TouchPhase.Moved)
+            {
+                rotator = Input.GetTouch(1).position - tempCenter;
+                rotateCam();
+                zoom();
+            }
+        }
+
+
+        /*    if (Input.touchCount == 2)
         {
             StopCamera();
             if (Input.GetTouch(0).phase == TouchPhase.Began)
@@ -152,8 +184,15 @@ public class TouchController : MonoBehaviour
             {
                 rotator = Input.GetTouch(1).position-tempCenter;
                 rotateCam();
+                zoom();
             }
         }
+        */
+    }
+
+    private void zoom()
+    {
+        
     }
 
     private void rotateCam()
