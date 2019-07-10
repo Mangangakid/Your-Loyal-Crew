@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class TouchController : MonoBehaviour
 {
@@ -21,17 +22,25 @@ public class TouchController : MonoBehaviour
     private float height;
     private float width;
 
-    public Vector2 tempCenter;
+    /*public Vector2 tempCenter;
     public Vector2 rotationStart;
     public Vector2 rotator;
+    */
+    private Vector2 a0;
+    private Vector2 a1;
+    private Vector2 b0;
+    private Vector2 b1;
 
     public CameraFollow camFollow;
+    private int TwoFingerFunction = 0; //0: Idle, 1:Zooming, 2:Rotating
 
     [Header("Camera Constrains")]
     public float maxZ = 13f;
     public float minZ = -23f;
     public float maxX = 13f;
     public float minX = -13f;
+
+    public Text Textito;
 
 
     // Start is called before the first frame update
@@ -141,64 +150,108 @@ public class TouchController : MonoBehaviour
 
     private void TwoFingers()
     {
-        if (Input.touchCount == 2)
+        if(Input.touchCount == 2)
         {
             StopCamera();
             if (Input.GetTouch(0).phase == TouchPhase.Began)
             {
-                tempCenter = Input.GetTouch(0).position;
+                a0 = ToScreenPoint(Input.GetTouch(0).position);
+                a1 = a0;
             }
             if (Input.GetTouch(1).phase == TouchPhase.Began)
             {
-                rotationStart = Input.GetTouch(1).position - tempCenter;
+                b0 = ToScreenPoint(Input.GetTouch(1).position);
+                b1 = b0;
             }
             if (Input.GetTouch(0).phase == TouchPhase.Moved)
             {
-                if(Vector3.Magnitude(tempCenter - Input.GetTouch(0).position) > touchRadius)
-                {
-                    float initialDistance = Vector3.Magnitude(rotationStart);
-                    camFollow.zoom += (initialDistance - Vector3.Magnitude(Input.GetTouch(1).position- Input.GetTouch(0).position))*Time.deltaTime;
-                }
-            }
-              if (Input.GetTouch(1).phase == TouchPhase.Moved)
-            {
-                rotator = Input.GetTouch(1).position - tempCenter;
-                rotateCam();
-                zoom();
-            }
-        }
-
-
-        /*    if (Input.touchCount == 2)
-        {
-            StopCamera();
-            if (Input.GetTouch(0).phase == TouchPhase.Began)
-            {
-                tempCenter = Input.GetTouch(0).position; 
-            }
-            if (Input.GetTouch(1).phase == TouchPhase.Began)
-            {
-                rotationStart = Input.GetTouch(1).position-tempCenter;
+                a1 = ToScreenPoint(Input.GetTouch(0).position);
+                EvaluateTwoFingers();
             }
             if (Input.GetTouch(1).phase == TouchPhase.Moved)
             {
-                rotator = Input.GetTouch(1).position-tempCenter;
-                rotateCam();
-                zoom();
+                b1  = ToScreenPoint(Input.GetTouch(0).position);
+                EvaluateTwoFingers();
+            }            
+        }
+        else
+        {
+            a0 = Vector2.zero;
+            a1 = Vector2.zero;
+            b0 = Vector2.zero;
+            b1 = Vector2.zero;
+        }
+    }
+
+    private void EvaluateTwoFingers()
+    {
+        if ((Vector2.Distance(a0,a1)>(touchRadius*0.9f))&&(Vector2.Distance(b0,b1)>(touchRadius*.09f)))
+        {
+            TwoFingerFunction = 1;
+        }
+        else
+        {
+            if ((Vector2.Distance(a0, a1) > (touchRadius * 1.1f)) && (Vector2.Distance(b0, b1) < (touchRadius * 1.1f)))
+            {
+                TwoFingerFunction = 2;
+            }
+            else
+            {
+                if ((Vector2.Distance(a0, a1) < (touchRadius * 1.1f)) && (Vector2.Distance(b0, b1) > (touchRadius * 1.1f)))
+                {
+                    TwoFingerFunction = 2;
+                }
+                else
+                {
+                    TwoFingerFunction = 0;
+                }
             }
         }
-        */
+        Textito.text =TwoFingerFunction.ToString();
     }
 
-    private void zoom()
+    /* private void TwoFingers()
+     {
+         if (Input.touchCount == 2)
+         {
+             StopCamera();
+             if (Input.GetTouch(0).phase == TouchPhase.Began)
+             {
+                 tempCenter = Input.GetTouch(0).position;
+             }
+             if (Input.GetTouch(1).phase == TouchPhase.Began)
+             {
+                 rotationStart = Input.GetTouch(1).position - tempCenter;
+             }
+             if (Input.GetTouch(0).phase == TouchPhase.Moved)
+             {
+                 if(Vector2.Distance(ToScreenPoint (tempCenter), ToScreenPoint(Input.GetTouch(0).position))>touchRadius)
+                 {
+                     float initialDistance = Vector3.Magnitude(ToScreenPoint (rotationStart));
+                     camFollow.zoom += (initialDistance - Vector3.Magnitude(ToScreenPoint(Input.GetTouch(1).position)- ToScreenPoint(Input.GetTouch(0).position)))*Time.deltaTime;
+                 }
+             }
+               if (Input.GetTouch(1).phase == TouchPhase.Moved)
+             {
+                 rotator = Input.GetTouch(1).position - tempCenter;
+                 rotateCam();
+             }
+         }
+     }
+ */
+
+
+    private Vector2 ToScreenPoint(Vector2 _vector)
     {
-        
+        Vector2 aux = new Vector2((_vector.x - width) / width, (_vector.y - height) / height);
+        return aux;
     }
 
-    private void rotateCam()
+ /*   private void rotateCam()
     {
         camFollow.angle += (Mathf.Atan2(rotator.y, rotator.x) - Mathf.Atan2(rotationStart.y, rotationStart.x))*spinSpeed*Time.deltaTime;
     }
+    */
 
     private void StopCamera()
     {
