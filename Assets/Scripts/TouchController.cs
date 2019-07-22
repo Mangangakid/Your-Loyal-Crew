@@ -3,312 +3,390 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
+
 
 public class TouchController : MonoBehaviour
 {
-    private GameObject[] characters;
-    private Character[] charactersScripts;
-    public bool moving = false;
-    private bool stationaryTouch = false;
-    private bool selectionTouch = false; 
-    private Vector3 startPoint;
-    private Vector3 endPoint;
-    public GameObject camFocus;
-    public float speed =5f;
-    public float spinSpeed = 0.5f;
-    public float touchRadius = 0.1f;
+    
+    public Transform ScrollablePlane;
+    public float TouchTolerance = 0.5f;
+    public float BorderLimit = 1f;
+    public float RotationSpeed = 0.7f;
+    public float ZoomSpeed = 1f;
+    public bool Rotate=true;
 
-    private float height;
-    private float width;
+    private Vector2 lastTouch0;
+    private Vector2 lastTouch1;
+    private Vector2 newTouch0;
+    private Vector2 newTouch1;
 
-    /*public Vector2 tempCenter;
-    public Vector2 rotationStart;
-    public Vector2 rotator;
-    */
-    private Vector2 a0;
-    private Vector2 a1;
-    private Vector2 b0;
-    private Vector2 b1;
+    private Vector3 newTouchDrag;
+    private Vector3 lastTouchDrag;
+    private Vector3 direction;
 
-    public CameraFollow camFollow;
-    private int TwoFingerFunction = 0; //0: Idle, 1:Zooming, 2:Rotating
+    private bool StaticTouch=false;
+    private bool moving = false;
+    private bool zoomingAndRotating = false;
+    private Transform _focus;
+    private GameManager _gameManager;
+    private CameraFollow _camFollow;
 
-    [Header("Camera Constrains")]
-    public float maxZ = 13f;
-    public float minZ = -23f;
-    public float maxX = 13f;
-    public float minX = -13f;
-
-    public Text Textito;
-
-
-    // Start is called before the first frame update
-    void Start()
+    private enum TouchState
     {
-        width = Screen.width / 2.0f;
-        height = Screen.height / 2.0f;
-        Refresh();
+        Idle, //No touch or more than two touches +++Goes to: Select, Order, Swipe, TwoFingerIdle+++
+        Swipe,//One Touch and drag over scrollable plane +++Goes to: Idle, TwoFingerIdle+++
+        TwoFingerIdle, //Two still touches +++Goes to : ZoomAndRotate, Idle+++
+        ZoomAndRotate //Two finger moving touches +++Goes to: Idle+++
     }
 
-    //Loads characters and their asociated scripts in two arrays 
-    private void Refresh()
+    TouchState CurrentState = TouchState.Idle;
+
+    #region Finite State Machine Setup
+    private void Start()
     {
-        characters = GameObject.FindGameObjectsWithTag("Player");
-        charactersScripts = new Character[characters.Length];
-        for (int i=0;i<characters.Length;i++)
+        _gameManager = GameManager.instance;
+        _camFollow = gameObject.GetComponent<CameraFollow>();
+        _focus = _camFollow.target;
+        StartCoroutine("FSM");
+    }
+
+    IEnumerator FSM() //This is the state machine
+    {
+        while (true)
         {
-            charactersScripts[i] = characters[i].GetComponent<Character>();
+            yield return StartCoroutine(CurrentState.ToString());
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    private void ChangeState(TouchState NextState) //This is the changer of states
     {
-        TouchProcess();
-        MoveCamera();
+        CurrentState = NextState;
     }
+    #endregion
 
-    //Camera move and character interaction
-    private void TouchProcess()
+    #region Idle
+
+    IEnumerator Idle() //This loops in the Idle state
     {
-        TwoFingers();
-        if (Input.touchCount == 1)
+        while(CurrentState == TouchState.Idle)
         {
-            if ((Input.GetTouch(0).phase == TouchPhase.Began)&& (!EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId)))
+            switch (Input.touchCount)
             {
-                Vector3 touch = Input.GetTouch(0).position;
-                Ray ray = Camera.main.ScreenPointToRay(touch);
-                if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity))
-                {
-                    if (hit.transform.gameObject.tag == "Player")
+                case 1:
+                    lastTouch0 = newTouch0;
+                    if (Input.GetTouch(0).phase == TouchPhase.Began)
                     {
-                        Character charScript = hit.transform.gameObject.GetComponent<Character>();
-                        moving = false;
-                        selectionTouch = true;
-                        if (charScript.selected)
-                        {
-                            UnselectAll();
-                        }
-                        else
-                        {
-                            UnselectAll();
-                            hit.transform.gameObject.GetComponent<Character>().Select(true);                            
-                        }
+                        newTouch0 = Camera.main.ScreenToViewportPoint(Input.GetTouch(0).position);
+                        StaticTouch = true;
                     }
-                    else
+                    if (Input.GetTouch(0).phase == TouchPhase.Moved)
                     {
-                        moving = true;
-                        TouchableCharacters(false);
-                        startPoint = hit.point;
-                        startPoint.y = 1f;
-                        endPoint = startPoint;
-                        stationaryTouch = true;
-                        selectionTouch = false;
+                        if (!NearTouches(Camera.main.ScreenToViewportPoint(Input.GetTouch(0).position), lastTouch0))
+                        {
+                            StaticTouch = false;
+                            ChangeState(TouchState.Swipe);
+                        }                        
                     }
-                }
+                    if (Input.GetTouch(0).phase == TouchPhase.Ended)
+                    {
+                        if (NearTouches(Camera.main.ScreenToViewportPoint(Input.GetTouch(0).position), lastTouch0)||StaticTouch)
+                        {
+                            OrderOrSelection();
+                        }
+                        StaticTouch = false;
+                    }
+                    if (Input.GetTouch(0).phase == TouchPhase.Canceled)
+                    {
+                        newTouch0 = Vector2.zero;
+                        lastTouch0 = Vector2.zero;
+                        StaticTouch = false;
+                    }
+                    break;
+                case 2:
+                    ChangeState(TouchState.TwoFingerIdle);
+                    break;
+                default:
+                    break;
             }
-            else
-            {
-                if (Input.GetTouch(0).phase == TouchPhase.Moved)
-                {
-                    if (moving)
-                    {
-                        Ray ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
-                        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity))
-                        {
-                            endPoint = hit.point;
-                            endPoint.y = 1f;
-                        }
-                        if (Vector3.Magnitude(endPoint - startPoint) > touchRadius)
-                        {
-                            stationaryTouch = false;
-                        }
-                    }
-                }
-                if ((Input.GetTouch(0).phase == TouchPhase.Ended) && (stationaryTouch) && (!selectionTouch))
-                {
-                    Ray ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
-                    if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity))
-                    {
-                        for (int i = 0; i < charactersScripts.Length; i++)
-                        {
-                            if (charactersScripts[i].selected)
-                            {
-                                charactersScripts[i].MoveTo(hit.point);
-                            }
-                        }
-                    }
-                }
-                if (((Input.GetTouch(0).phase == TouchPhase.Ended) || (Input.GetTouch(0).phase == TouchPhase.Canceled)) && moving)
-                {
-                    StopCamera();
-                }
-            }    
+            yield return 0; 
         }
     }
 
-    private void TwoFingers()
+    //Sorts the touch as an order or a selection
+    private void OrderOrSelection()
     {
-        if(Input.touchCount == 2)
+        RaycastHit hit;
+        Ray ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
+        if (Physics.Raycast(ray, out hit))
         {
-            StopCamera();
-            if (Input.GetTouch(0).phase == TouchPhase.Began)
+            Transform objectHit = hit.transform;
+            if (objectHit.tag == "Player") //What happens if I touch a player Character
             {
-                a0 = ToScreenPoint(Input.GetTouch(0).position);
-                a1 = a0;
-            }
-            if (Input.GetTouch(1).phase == TouchPhase.Began)
-            {
-                b0 = ToScreenPoint(Input.GetTouch(1).position);
-                b1 = b0;
-            }
-            if (Input.GetTouch(0).phase == TouchPhase.Moved)
-            {
-                a1 = ToScreenPoint(Input.GetTouch(0).position);
-                EvaluateTwoFingers();
-            }
-            if (Input.GetTouch(1).phase == TouchPhase.Moved)
-            {
-                b1  = ToScreenPoint(Input.GetTouch(0).position);
-                EvaluateTwoFingers();
-            }            
-        }
-        else
-        {
-            a0 = Vector2.zero;
-            a1 = Vector2.zero;
-            b0 = Vector2.zero;
-            b1 = Vector2.zero;
-        }
-    }
-
-    private void EvaluateTwoFingers()
-    {
-        if ((Vector2.Distance(a0,a1)>(touchRadius*0.9f))&&(Vector2.Distance(b0,b1)>(touchRadius*.09f)))
-        {
-            TwoFingerFunction = 1;
-        }
-        else
-        {
-            if ((Vector2.Distance(a0, a1) > (touchRadius * 1.1f)) && (Vector2.Distance(b0, b1) < (touchRadius * 1.1f)))
-            {
-                TwoFingerFunction = 2;
-            }
-            else
-            {
-                if ((Vector2.Distance(a0, a1) < (touchRadius * 1.1f)) && (Vector2.Distance(b0, b1) > (touchRadius * 1.1f)))
+                Character CharacterHit = objectHit.GetComponent<Character>();
+                if (CharacterHit.selected)
                 {
-                    TwoFingerFunction = 2;
+                    _gameManager.UnselectAll();
                 }
                 else
                 {
-                    TwoFingerFunction = 0;
+                    _gameManager.UnselectAll();
+                    CharacterHit.Select(true);
+                }
+            }
+            else
+            {
+                if (_gameManager.SelectedCharacter != 0)
+                {
+                    if (objectHit.tag == "Enemy")
+                    {
+                        //What happens if I touch an Enemy
+                    }
+                    else
+                    {
+                        if (objectHit.tag == "Interactable")
+                        {
+                            //What happens if I touch an Interactable Object
+                        }
+                        else
+                        {
+                            WalkTo(hit.point);
+                        }
+                    }
                 }
             }
         }
-        Textito.text =TwoFingerFunction.ToString();
     }
 
-    /* private void TwoFingers()
-     {
-         if (Input.touchCount == 2)
-         {
-             StopCamera();
-             if (Input.GetTouch(0).phase == TouchPhase.Began)
-             {
-                 tempCenter = Input.GetTouch(0).position;
-             }
-             if (Input.GetTouch(1).phase == TouchPhase.Began)
-             {
-                 rotationStart = Input.GetTouch(1).position - tempCenter;
-             }
-             if (Input.GetTouch(0).phase == TouchPhase.Moved)
-             {
-                 if(Vector2.Distance(ToScreenPoint (tempCenter), ToScreenPoint(Input.GetTouch(0).position))>touchRadius)
-                 {
-                     float initialDistance = Vector3.Magnitude(ToScreenPoint (rotationStart));
-                     camFollow.zoom += (initialDistance - Vector3.Magnitude(ToScreenPoint(Input.GetTouch(1).position)- ToScreenPoint(Input.GetTouch(0).position)))*Time.deltaTime;
-                 }
-             }
-               if (Input.GetTouch(1).phase == TouchPhase.Moved)
-             {
-                 rotator = Input.GetTouch(1).position - tempCenter;
-                 rotateCam();
-             }
-         }
-     }
- */
-
-
-    private Vector2 ToScreenPoint(Vector2 _vector)
+    //Moves the selected Character to a target destination
+    private void WalkTo(Vector3 target)
     {
-        Vector2 aux = new Vector2((_vector.x - width) / width, (_vector.y - height) / height);
-        return aux;
+        target = new Vector3(target.x, 1f, target.z);
+        _gameManager.Characters[_gameManager.SelectedCharacter - 1].MoveTo(target);
     }
 
- /*   private void rotateCam()
+    //Returns true if two touches are near from each other
+    private bool NearTouches(Vector2 aux1, Vector2 aux2)
     {
-        camFollow.angle += (Mathf.Atan2(rotator.y, rotator.x) - Mathf.Atan2(rotationStart.y, rotationStart.x))*spinSpeed*Time.deltaTime;
+        return (Vector2.Distance(aux1, aux2) < TouchTolerance);
     }
-    */
+    #endregion
 
-    private void StopCamera()
-    {
-        moving = false;
-        startPoint = Vector3.zero;
-        endPoint = Vector3.zero;
-        TouchableCharacters(true);
-    }
+    #region Swipe
 
-    private void MoveCamera()
+    IEnumerator Swipe() //This loops in Swipe state
     {
-        if (moving)
+        switch (Input.touchCount)
         {
-             Vector3 direction = startPoint - endPoint;
-             if (camFocus.transform.position.z >= maxZ && (direction.z>0))
-             {
-                 direction.z = 0f;
-             }
-             if (camFocus.transform.position.x >= maxX && (direction.x > 0))
-             {
-                 direction.x = 0f;
-             }
-             if (camFocus.transform.position.z <= minZ && (direction.z < 0))
-             {
-                 direction.z = 0f;
-             }
-             if (camFocus.transform.position.x <= minX && (direction.x < 0))
-             {
-                 direction.x = 0f;
-             }
-            camFocus.transform.position = camFocus.transform.position + direction;
+            case 1:
+                switch (Input.GetTouch(0).phase)
+                {
+                    case TouchPhase.Moved:
+                        Ray ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
+                        LayerMask mask = LayerMask.GetMask("Floor");
+                        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity,mask))
+                        {
+                            if (moving)
+                            {
+                                lastTouchDrag = hit.point;
+                                direction = newTouchDrag - lastTouchDrag;
+                                direction = new Vector3(direction.x, 0f, direction.z);
+                                //_focus.position = _focus.position + direction;
+                                Move(_focus, direction);
+                            }
+                            else
+                            {
+                                newTouchDrag = hit.point;
+                            }
+                        }
+                        moving = true;
+                        break;
+                    case TouchPhase.Stationary:
+                        break;
+                    default:
+                        ChangeState(TouchState.Idle);
+                        moving = false;
+                        break;
+                }
+                break;
+            case 2:
+                ChangeState(TouchState.TwoFingerIdle);
+                moving = false;
+                break;
+            default:
+                ChangeState(TouchState.Idle);
+                moving = false;
+                break;
         }
+        yield return 0;     
     }
 
-    private void UnselectAll()
+    private void Move(Transform focus,Vector3 dir)
     {
-        foreach (Character item in charactersScripts)
-        {
-            item.Select(false);
-        }
+        Vector3 newPosition = focus.position + dir;
+        float xedge = ScrollablePlane.transform.lossyScale.x * 5f;
+        float zedge = ScrollablePlane.transform.lossyScale.z * 5f;
+        if (newPosition.x > xedge-BorderLimit)
+            newPosition.x = xedge-BorderLimit;
+        if (newPosition.x < -xedge+BorderLimit)
+            newPosition.x = -xedge+BorderLimit;
+        if (newPosition.z > zedge-BorderLimit)
+            newPosition.z = zedge-BorderLimit;
+        if (newPosition.z < -zedge+BorderLimit)
+            newPosition.z = -zedge+BorderLimit;
+        focus.position = newPosition;
     }
 
-    private void TouchableCharacters(bool value)
+    #endregion
+
+    #region TwoFingerIdle
+
+    IEnumerator TwoFingerIdle() //This loops while thwo fingers are touching the screen but not moving enough to rotate or zoom
     {
-        if (value)
+        while (CurrentState == TouchState.TwoFingerIdle)
         {
-            for (int i = 0; i < characters.Length; i++)
+            switch (Input.touchCount)
             {
-                characters[i].layer = 0;
+                case 1:
+                    ChangeState(TouchState.Idle);
+                    break;
+                case 2:
+                    bool moved = false;
+                    if (Input.GetTouch(0).phase == TouchPhase.Began)
+                    {
+                        newTouch0 = Camera.main.ScreenToViewportPoint(Input.GetTouch(0).position);
+                        lastTouch0 = newTouch0;
+                    }
+                    if (Input.GetTouch(1).phase == TouchPhase.Began)
+                    {
+                        newTouch1 = Camera.main.ScreenToViewportPoint(Input.GetTouch(1).position);
+                        lastTouch0 = newTouch1;
+                    }
+                    if (Input.GetTouch(0).phase == TouchPhase.Moved)
+                    {
+                        lastTouch0 = Camera.main.ScreenToViewportPoint(Input.GetTouch(0).position);
+                        moved = true;
+                    }
+                    if (Input.GetTouch(1).phase == TouchPhase.Moved)
+                    {
+                        lastTouch1 = Camera.main.ScreenToViewportPoint(Input.GetTouch(1).position);
+                        moved = true;
+                    }
+                    if (moved)
+                    {
+                        ChangeState(TouchState.ZoomAndRotate);
+                    }
+                    break;
+                default:
+                    ChangeState(TouchState.Idle);
+                    break;
             }
+            yield return 0;
+        }
+    }
+
+    #endregion
+
+    #region Zoom And Rotate
+
+    IEnumerator ZoomAndRotate()
+    {
+        while (CurrentState == TouchState.ZoomAndRotate)
+        {
+            switch (Input.touchCount)
+            {
+                case 1:
+                    ChangeState(TouchState.Idle);
+                    zoomingAndRotating = false;
+                    break;
+                case 2:
+                    if (Input.GetTouch(0).phase == TouchPhase.Moved)
+                    {
+                        lastTouch0 = Camera.main.ScreenToViewportPoint(Input.GetTouch(0).position);
+                    }
+                    if (Input.GetTouch(1).phase == TouchPhase.Moved)
+                    {
+                        lastTouch1 = Camera.main.ScreenToViewportPoint(Input.GetTouch(1).position);
+                    }
+                    if (zoomingAndRotating)
+                    {
+                        Zooming();
+                        if (Rotate)
+                        {
+                            Rotating();
+                        }
+                    }
+                    newTouch0 = lastTouch0;
+                    newTouch1 = lastTouch1;
+                    zoomingAndRotating = true;
+                    break;
+                default:
+                    ChangeState(TouchState.Idle);
+                    zoomingAndRotating = false;
+                    break;
+            }
+            yield return 0;
+        }
+    }
+
+    /* private void Rotating()
+     {
+         if (Vector3.Magnitude(lastTouch1 - newTouch1) < TouchTolerance * 0.1f){
+             Vector2 V1 = newTouch0 - newTouch1;
+             Vector2 V2 = lastTouch0 - newTouch1;
+             float alpha = Mathf.Atan2(V1.y, V1.x);
+             float beta = Mathf.Atan2(V2.y, V2.x);
+             float gamma = beta - alpha;
+             _camFollow.angle = _camFollow.angle - gamma;
+         } 
+         if (Vector3.Magnitude(lastTouch0 - newTouch0) < TouchTolerance * 0.1f){
+             Vector2 V1 = newTouch1 - newTouch0;
+             Vector2 V2 = lastTouch1 - newTouch0;
+             float alpha = Mathf.Atan2(V1.y,V1.x);
+             float beta = Mathf.Atan2(V2.y,V2.x);
+             float gamma = beta - alpha;
+             _camFollow.angle = _camFollow.angle - gamma;
+         }
+     }*/
+
+    private void Rotating()
+    {
+        Vector2 C1 = (newTouch0 + newTouch1) / 2f;
+        Vector2 C2 = (lastTouch0 + lastTouch1) / 2f;
+        Vector2 V1 = newTouch1 - C1;
+        if (V1 == Vector2.zero)
+        {
+            V1 = C1 - newTouch0;
+        }
+        Vector2 V2 = lastTouch1 - C2;
+        if (V2 == Vector2.zero)
+        {
+            V2 = C2 - lastTouch0;
+        }
+        float alpha = Mathf.Atan2(V1.y, V1.x);
+        float beta = Mathf.Atan2(V2.y, V2.x);
+        float gamma = beta - alpha;
+        _camFollow.angle = _camFollow.angle - gamma;
+
+    }
+
+        private void Zooming()
+    {
+        float zoom = Vector3.Magnitude(lastTouch0 - lastTouch1) - Vector3.Magnitude(newTouch0 - newTouch1);
+        if (_camFollow.zoom - zoom > 5)
+        {
+            _camFollow.zoom = 5f;
         }
         else
         {
-            for (int i = 0; i < characters.Length; i++)
+            if (_camFollow.zoom - zoom < 1)
             {
-                characters[i].layer = 2;
+                _camFollow.zoom = 1f;
+            }
+            else
+            {
+                _camFollow.zoom -= zoom*ZoomSpeed;
             }
         }
     }
+    #endregion
 }

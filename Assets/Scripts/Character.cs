@@ -11,11 +11,16 @@ public class Character : MonoBehaviour
     public GameObject selectionArrow;
     public bool selected = false;
     private NavMeshAgent agent;
+    private GameManager gamemanager;
+    public int CharacterId;
 
     // Sets up the character when is loaded
     void Start()
     {
         agent = gameObject.GetComponent<NavMeshAgent>();
+        gamemanager = GameManager.instance;
+        gamemanager.AddCharacter(this);
+        CharacterId = gamemanager.Characters.Count;
     }
 
     // Selects or Unselects the character
@@ -23,6 +28,7 @@ public class Character : MonoBehaviour
     {
         selected = value;
         selectionArrow.SetActive(value);
+        gamemanager.SelectedCharacter = CharacterId;
     }
 
     //Sets the NavMeshAgent to move the character to the target

@@ -6,6 +6,7 @@ public class CameraFollow : MonoBehaviour
 {
     public Transform target;
     public float angle=0f;
+    public float OrthographicZoomAdjustment = 2f;
     [Range(1.5f,6.5f)]
     public float zoom = 4f;
 
@@ -13,11 +14,11 @@ public class CameraFollow : MonoBehaviour
     void Update()
     {
         float radius = zoom * 2f;
-        transform.position = target.position + new Vector3(radius * Mathf.Cos(angle), 1 / 0.577350269f * radius, radius * Mathf.Sin(angle));
+        transform.position = target.position + new Vector3(radius * Mathf.Cos(angle), 1 / 0.577350269f * radius, radius * Mathf.Sin(angle));  
         transform.LookAt(target.position);
         if (Camera.main.orthographic)
         {
-            Camera.main.orthographicSize = zoom;
+            Camera.main.orthographicSize = zoom*OrthographicZoomAdjustment;
         }
     }
 }
