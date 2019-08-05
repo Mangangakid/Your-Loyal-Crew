@@ -26,16 +26,16 @@ public class TouchController : MonoBehaviour
 
     private bool StaticTouch=false;
     private bool moving = false;
-    private bool zoomingAndRotating = false;
+    private int zoomingAndRotating0 = 0;
+    private int zoomingAndRotating1 = 0;
     private Transform _focus;
     private GameManager _gameManager;
     private CameraFollow _camFollow;
 
     private enum TouchState
     {
-        Idle, //No touch or more than two touches +++Goes to: Select, Order, Swipe, TwoFingerIdle+++
-        Swipe,//One Touch and drag over scrollable plane +++Goes to: Idle, TwoFingerIdle+++
-        TwoFingerIdle, //Two still touches +++Goes to : ZoomAndRotate, Idle+++
+        Idle, //No touch or more than two touches +++Goes to: Select, Order, Swipe, ZoomAndRotate+++
+        Swipe,//One Touch and drag over scrollable plane +++Goes to: Idle, ZoomAndRotate+++
         ZoomAndRotate //Two finger moving touches +++Goes to: Idle+++
     }
 
@@ -74,12 +74,12 @@ public class TouchController : MonoBehaviour
             {
                 case 1:
                     lastTouch0 = newTouch0;
-                    if (Input.GetTouch(0).phase == TouchPhase.Began)
+                    if (Input.GetTouch(0).phase == TouchPhase.Began && !EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
                     {
                         newTouch0 = Camera.main.ScreenToViewportPoint(Input.GetTouch(0).position);
                         StaticTouch = true;
                     }
-                    if (Input.GetTouch(0).phase == TouchPhase.Moved)
+                    if (Input.GetTouch(0).phase == TouchPhase.Moved&& !EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
                     {
                         if (!NearTouches(Camera.main.ScreenToViewportPoint(Input.GetTouch(0).position), lastTouch0))
                         {
@@ -87,7 +87,7 @@ public class TouchController : MonoBehaviour
                             ChangeState(TouchState.Swipe);
                         }                        
                     }
-                    if (Input.GetTouch(0).phase == TouchPhase.Ended)
+                    if (Input.GetTouch(0).phase == TouchPhase.Ended && !EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
                     {
                         if (NearTouches(Camera.main.ScreenToViewportPoint(Input.GetTouch(0).position), lastTouch0)||StaticTouch)
                         {
@@ -103,7 +103,7 @@ public class TouchController : MonoBehaviour
                     }
                     break;
                 case 2:
-                    ChangeState(TouchState.TwoFingerIdle);
+                    ChangeState(TouchState.ZoomAndRotate);
                     break;
                 default:
                     break;
@@ -190,7 +190,6 @@ public class TouchController : MonoBehaviour
                                 lastTouchDrag = hit.point;
                                 direction = newTouchDrag - lastTouchDrag;
                                 direction = new Vector3(direction.x, 0f, direction.z);
-                                //_focus.position = _focus.position + direction;
                                 Move(_focus, direction);
                             }
                             else
@@ -209,7 +208,7 @@ public class TouchController : MonoBehaviour
                 }
                 break;
             case 2:
-                ChangeState(TouchState.TwoFingerIdle);
+                ChangeState(TouchState.ZoomAndRotate);
                 moving = false;
                 break;
             default:
@@ -238,76 +237,31 @@ public class TouchController : MonoBehaviour
 
     #endregion
 
-    #region TwoFingerIdle
-
-    IEnumerator TwoFingerIdle() //This loops while thwo fingers are touching the screen but not moving enough to rotate or zoom
-    {
-        while (CurrentState == TouchState.TwoFingerIdle)
-        {
-            switch (Input.touchCount)
-            {
-                case 1:
-                    ChangeState(TouchState.Idle);
-                    break;
-                case 2:
-                    bool moved = false;
-                    if (Input.GetTouch(0).phase == TouchPhase.Began)
-                    {
-                        newTouch0 = Camera.main.ScreenToViewportPoint(Input.GetTouch(0).position);
-                        lastTouch0 = newTouch0;
-                    }
-                    if (Input.GetTouch(1).phase == TouchPhase.Began)
-                    {
-                        newTouch1 = Camera.main.ScreenToViewportPoint(Input.GetTouch(1).position);
-                        lastTouch0 = newTouch1;
-                    }
-                    if (Input.GetTouch(0).phase == TouchPhase.Moved)
-                    {
-                        lastTouch0 = Camera.main.ScreenToViewportPoint(Input.GetTouch(0).position);
-                        moved = true;
-                    }
-                    if (Input.GetTouch(1).phase == TouchPhase.Moved)
-                    {
-                        lastTouch1 = Camera.main.ScreenToViewportPoint(Input.GetTouch(1).position);
-                        moved = true;
-                    }
-                    if (moved)
-                    {
-                        ChangeState(TouchState.ZoomAndRotate);
-                    }
-                    break;
-                default:
-                    ChangeState(TouchState.Idle);
-                    break;
-            }
-            yield return 0;
-        }
-    }
-
-    #endregion
-
     #region Zoom And Rotate
 
     IEnumerator ZoomAndRotate()
     {
+        StartZoomingAndRotating();
         while (CurrentState == TouchState.ZoomAndRotate)
         {
             switch (Input.touchCount)
             {
                 case 1:
                     ChangeState(TouchState.Idle);
-                    zoomingAndRotating = false;
+                    StartZoomingAndRotating();
                     break;
                 case 2:
                     if (Input.GetTouch(0).phase == TouchPhase.Moved)
                     {
                         lastTouch0 = Camera.main.ScreenToViewportPoint(Input.GetTouch(0).position);
+                        zoomingAndRotating0++;
                     }
                     if (Input.GetTouch(1).phase == TouchPhase.Moved)
                     {
                         lastTouch1 = Camera.main.ScreenToViewportPoint(Input.GetTouch(1).position);
+                        zoomingAndRotating1++;
                     }
-                    if (zoomingAndRotating)
+                    if (zoomingAndRotating0>1&&zoomingAndRotating1>1)
                     {
                         Zooming();
                         if (Rotate)
@@ -317,36 +271,21 @@ public class TouchController : MonoBehaviour
                     }
                     newTouch0 = lastTouch0;
                     newTouch1 = lastTouch1;
-                    zoomingAndRotating = true;
                     break;
                 default:
                     ChangeState(TouchState.Idle);
-                    zoomingAndRotating = false;
+                    StartZoomingAndRotating();
                     break;
             }
             yield return 0;
         }
     }
 
-    /* private void Rotating()
-     {
-         if (Vector3.Magnitude(lastTouch1 - newTouch1) < TouchTolerance * 0.1f){
-             Vector2 V1 = newTouch0 - newTouch1;
-             Vector2 V2 = lastTouch0 - newTouch1;
-             float alpha = Mathf.Atan2(V1.y, V1.x);
-             float beta = Mathf.Atan2(V2.y, V2.x);
-             float gamma = beta - alpha;
-             _camFollow.angle = _camFollow.angle - gamma;
-         } 
-         if (Vector3.Magnitude(lastTouch0 - newTouch0) < TouchTolerance * 0.1f){
-             Vector2 V1 = newTouch1 - newTouch0;
-             Vector2 V2 = lastTouch1 - newTouch0;
-             float alpha = Mathf.Atan2(V1.y,V1.x);
-             float beta = Mathf.Atan2(V2.y,V2.x);
-             float gamma = beta - alpha;
-             _camFollow.angle = _camFollow.angle - gamma;
-         }
-     }*/
+    private void StartZoomingAndRotating()
+    {
+        zoomingAndRotating0 = 0;
+        zoomingAndRotating1 = 0;
+    }
 
     private void Rotating()
     {
@@ -366,7 +305,6 @@ public class TouchController : MonoBehaviour
         float beta = Mathf.Atan2(V2.y, V2.x);
         float gamma = beta - alpha;
         _camFollow.angle = _camFollow.angle - gamma;
-
     }
 
         private void Zooming()

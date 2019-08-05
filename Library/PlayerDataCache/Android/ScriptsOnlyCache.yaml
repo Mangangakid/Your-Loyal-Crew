@@ -702,4 +702,5 @@ ScriptsOnlyBuild:
   scenePathNames:
   - Assets/Scenes/Menu.unity
   - Assets/Scenes/Management.unity
-  playerPath: D:/DIGITAL GEARS/Your-Loyal-Crew/BUILDS/Your Loyal Crew.apk
+  playerPath: D:/Users/manga/Mis Cosas/Proyectos Unity/Your Loyal Crew/BUILDS/Your
+    Loyal Crew.apk
