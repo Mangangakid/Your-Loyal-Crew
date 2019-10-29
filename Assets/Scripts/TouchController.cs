@@ -145,7 +145,8 @@ public class TouchController : MonoBehaviour
                     {
                         if (objectHit.tag == "Interactable")
                         {
-                            //What happens if I touch an Interactable Object
+                            objectHit.parent.GetComponent<Room>().OnRoomTouched();
+                            //Debug.Log("Changos!");
                         }
                         else
                         {
@@ -158,7 +159,7 @@ public class TouchController : MonoBehaviour
     }
 
     //Moves the selected Character to a target destination
-    private void WalkTo(Vector3 target)
+    public void WalkTo(Vector3 target)
     {
         target = new Vector3(target.x, 1f, target.z);
         _gameManager.Characters[_gameManager.SelectedCharacter - 1].MoveTo(target);
