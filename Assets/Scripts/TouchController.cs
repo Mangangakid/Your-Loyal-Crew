@@ -135,7 +135,7 @@ public class TouchController : MonoBehaviour
             }
             else
             {
-                if (_gameManager.SelectedCharacter != 0)
+                if (_gameManager.SelectedCharacter != 0) //If a character is already selected
                 {
                     if (objectHit.tag == "Enemy")
                     {
@@ -146,12 +146,18 @@ public class TouchController : MonoBehaviour
                         if (objectHit.tag == "Interactable")
                         {
                             objectHit.parent.GetComponent<Room>().OnRoomTouched();
-                            //Debug.Log("Changos!");
                         }
-                        else
+                       /* else
                         {
-                            WalkTo(hit.point);
-                        }
+                            
+                        }*/
+                    }
+                }
+                else //If a character is not selected
+                {
+                    if (objectHit.tag == "Interactable") //selecting a room
+                    {
+                        objectHit.parent.GetComponent<Room>().OnRoomSelected();
                     }
                 }
             }

@@ -93,7 +93,6 @@ public class RoomPanel : MonoBehaviour
     public void WorkButtonPressed()
     {
         gm.SetBond(gm.Characters[gm.SelectedCharacter - 1], ActualRoom, 1);
-        //ActualRoom.AssignToWork(gm.SelectedCharacter);
         MyTouchController.WalkTo(ActualRoom.Workstations[ActualRoom.WorkingCharacters.Count - 1].GetComponent<RoomObject>().AnimationSpot.position);
         gm.UnselectAll();
         CloseRoomPanel();
@@ -107,7 +106,6 @@ public class RoomPanel : MonoBehaviour
     }
     public void HealButtonPressed()
     {
-        //ActualRoom.AssigntoBed(gm.SelectedCharacter);
         gm.SetBond(gm.Characters[gm.SelectedCharacter - 1], ActualRoom, 2);
         MyTouchController.WalkTo(ActualRoom.Beds[ActualRoom.SleepingCharacters.Count - 1].GetComponent<RoomObject>().AnimationSpot.position);
         gm.UnselectAll();
@@ -116,7 +114,6 @@ public class RoomPanel : MonoBehaviour
     public void RepairButtonPressed()
     {
         gm.SetBond(gm.Characters[gm.SelectedCharacter - 1], ActualRoom, 3);
-        //ActualRoom.AssigntoRepairs(gm.SelectedCharacter);
         MyTouchController.WalkTo(ActualRoom.Repairs[ActualRoom.RepairingCharacters.Count - 1].GetComponent<RoomObject>().AnimationSpot.position);
         gm.UnselectAll();
         CloseRoomPanel();

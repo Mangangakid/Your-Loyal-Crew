@@ -47,7 +47,10 @@ public class Room : MonoBehaviour
     {
         gm.GetComponent<RoomPanel>().OpenRoomPanel(this);
     }
-
+    public void OnRoomSelected()
+    {
+        Debug.Log("Hey! I'm a room and I've been selected! Yeyy!!!");
+    }
     private void Update()
     {
         Repairing();
