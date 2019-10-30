@@ -124,4 +124,12 @@ using UnityEngine;
             }
         }
     }
+    public void PauseOn()
+    {
+        Time.timeScale = 0.1f;
+    }
+    public void PauseOff()
+    {
+        Time.timeScale = 1f;
+    }
 }

@@ -101,6 +101,7 @@ public class RoomPanel : MonoBehaviour
     public void SleepButtonPressed()
     {
         gm.SetBond(gm.Characters[gm.SelectedCharacter - 1], ActualRoom, 2);
+        MyTouchController.WalkTo(ActualRoom.Beds[ActualRoom.SleepingCharacters.Count - 1].GetComponent<RoomObject>().AnimationSpot.position);
         gm.UnselectAll();
         CloseRoomPanel();
     }

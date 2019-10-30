@@ -9,8 +9,11 @@ ScriptsOnlyBuild:
     - GameManager
     - PauseMenu
     - Room
+    - RoomObject
+    - RoomPanel
     - SceneLoader
     - ScrollbarTwoColors
+    - SelectionPanel
     - ShowPanel
     - Styles
     - TouchController
@@ -70,49 +73,55 @@ ScriptsOnlyBuild:
     - Class: 108
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 9672}
+      Script: {instanceID: 9658}
     - Class: 114
-      Script: {instanceID: 9680}
+      Script: {instanceID: 9674}
     - Class: 114
-      Script: {instanceID: 9778}
-    - Class: 114
-      Script: {instanceID: 9826}
+      Script: {instanceID: 9682}
     - Class: 114
       Script: {instanceID: 9828}
     - Class: 114
-      Script: {instanceID: 9866}
+      Script: {instanceID: 9830}
     - Class: 114
-      Script: {instanceID: 10176}
+      Script: {instanceID: 9868}
     - Class: 114
-      Script: {instanceID: 10234}
+      Script: {instanceID: 10178}
     - Class: 114
-      Script: {instanceID: 10248}
+      Script: {instanceID: 10236}
     - Class: 114
-      Script: {instanceID: 10472}
+      Script: {instanceID: 10250}
     - Class: 114
-      Script: {instanceID: 10574}
+      Script: {instanceID: 10476}
     - Class: 114
-      Script: {instanceID: 10642}
+      Script: {instanceID: 10492}
     - Class: 114
-      Script: {instanceID: 10664}
+      Script: {instanceID: 10580}
     - Class: 114
-      Script: {instanceID: 10784}
+      Script: {instanceID: 10648}
     - Class: 114
-      Script: {instanceID: 10852}
+      Script: {instanceID: 10670}
     - Class: 114
-      Script: {instanceID: 10856}
+      Script: {instanceID: 10734}
     - Class: 114
-      Script: {instanceID: 10944}
+      Script: {instanceID: 10792}
     - Class: 114
-      Script: {instanceID: 11008}
+      Script: {instanceID: 10860}
     - Class: 114
-      Script: {instanceID: 11032}
+      Script: {instanceID: 10864}
     - Class: 114
-      Script: {instanceID: 11078}
+      Script: {instanceID: 10868}
     - Class: 114
-      Script: {instanceID: 11378}
+      Script: {instanceID: 10954}
     - Class: 114
-      Script: {instanceID: 11394}
+      Script: {instanceID: 11018}
+    - Class: 114
+      Script: {instanceID: 11042}
+    - Class: 114
+      Script: {instanceID: 11088}
+    - Class: 114
+      Script: {instanceID: 11388}
+    - Class: 114
+      Script: {instanceID: 11404}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -169,31 +178,31 @@ ScriptsOnlyBuild:
     - Class: 108
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 9672}
+      Script: {instanceID: 9674}
     - Class: 114
-      Script: {instanceID: 9826}
+      Script: {instanceID: 9828}
     - Class: 114
-      Script: {instanceID: 9866}
+      Script: {instanceID: 9868}
     - Class: 114
-      Script: {instanceID: 10176}
+      Script: {instanceID: 10178}
     - Class: 114
-      Script: {instanceID: 10234}
+      Script: {instanceID: 10236}
     - Class: 114
-      Script: {instanceID: 10372}
+      Script: {instanceID: 10376}
     - Class: 114
-      Script: {instanceID: 10574}
+      Script: {instanceID: 10580}
     - Class: 114
-      Script: {instanceID: 10664}
+      Script: {instanceID: 10670}
     - Class: 114
-      Script: {instanceID: 10852}
+      Script: {instanceID: 10860}
     - Class: 114
-      Script: {instanceID: 11032}
+      Script: {instanceID: 11042}
     - Class: 114
-      Script: {instanceID: 11166}
+      Script: {instanceID: 11176}
     - Class: 114
-      Script: {instanceID: 11378}
+      Script: {instanceID: 11388}
     - Class: 114
-      Script: {instanceID: 11394}
+      Script: {instanceID: 11404}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -219,13 +228,19 @@ ScriptsOnlyBuild:
   scriptHashData:
   - hash:
       serializedVersion: 2
+      Hash: 9bfcc5949ffb8371516f388d9545cb0b
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: RoomObject
+  - hash:
+      serializedVersion: 2
       Hash: 4bc4346a71a8df53a6b106f68ef3a190
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
     className: CanvasScaler
   - hash:
       serializedVersion: 2
-      Hash: e22837b586ebe30197c90b5304014c72
+      Hash: 254b239004edaf3259c30dca70cd21e3
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Character
@@ -258,7 +273,7 @@ ScriptsOnlyBuild:
       Hash: 973246ca1512e0ff07945417b6121989
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
-    className: Room
+    className: Room2
   - hash:
       serializedVersion: 2
       Hash: 20240431c815058690a3ba9bdfb91802
@@ -471,6 +486,12 @@ ScriptsOnlyBuild:
     className: CameraFollow
   - hash:
       serializedVersion: 2
+      Hash: 16ede0462bd1963051c8c67903262028
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: Room
+  - hash:
+      serializedVersion: 2
       Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
     assemblyName: UnityEngine.TestRunner.dll
     namespaceName: UnityEngine.TestTools.TestRunner.Callbacks
@@ -505,6 +526,12 @@ ScriptsOnlyBuild:
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
     className: VerticalLayoutGroup
+  - hash:
+      serializedVersion: 2
+      Hash: efc2844213a2279b3cd604945f1562a4
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: RoomPanel
   - hash:
       serializedVersion: 2
       Hash: 783f593b9380cf72d0f7ebfd4a0d4bcd
@@ -561,6 +588,12 @@ ScriptsOnlyBuild:
     className: EnergyManager
   - hash:
       serializedVersion: 2
+      Hash: 6942deb829a66d7817679c1c69ef9755
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: SelectionPanel
+  - hash:
+      serializedVersion: 2
       Hash: c1933cc0a2f4ff6eb13333347497beb3
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
@@ -609,7 +642,7 @@ ScriptsOnlyBuild:
     className: BeforeAfterTestCommandState
   - hash:
       serializedVersion: 2
-      Hash: fc37dd06c160d04243e08560512912cf
+      Hash: 3ab96c156f5f13332033680e6a411ee7
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: GameManager
