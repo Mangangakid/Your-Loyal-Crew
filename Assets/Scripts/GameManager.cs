@@ -12,6 +12,7 @@ using UnityEngine;
     public Transform[] IdleSpots;
     public int NextSpot;
     public int SelectedCharacter=0;
+    public Room SelectedRoom;
     public SelectionPanel selectionPanel;
     [Space]
     [Header("Delays")]

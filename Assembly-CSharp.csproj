@@ -75,6 +75,7 @@
     <Compile Include="Assets\Scripts\Room2.cs" />
     <Compile Include="Assets\Scripts\RoomObject.cs" />
     <Compile Include="Assets\Scripts\RoomPanel.cs" />
+    <Compile Include="Assets\Scripts\RoomSelectionPanel.cs" />
     <Compile Include="Assets\Scripts\SelectionPanel.cs" />
     <Compile Include="Assets\Scripts\TouchController.cs" />
     <Compile Include="Assets\Scripts\UI\EnergyManager.cs" />
