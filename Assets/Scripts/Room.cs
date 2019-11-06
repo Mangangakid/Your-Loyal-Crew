@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Room : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class Room : MonoBehaviour
     public GameObject[] Repairs = new GameObject[3];
     public GameObject[] Beds = new GameObject[5];
     public RoomType Type = RoomType.Bridge;
+    public Sprite RoomThumbnail;
     public int Power = 0;
     public float Integrity=100;
     public int Level = 1;
@@ -49,7 +51,7 @@ public class Room : MonoBehaviour
     }
     public void OnRoomSelected()
     {
-        Debug.Log("Hey! I'm a room and I've been selected! Yeyy!!!");
+        gm.GetComponent<RoomSelectionPanel>().OpenSelectionPanel(this);
     }
     private void Update()
     {
@@ -143,7 +145,7 @@ public class Room : MonoBehaviour
 
         if (WorkingCharacters.Count > 0)
         {
-            Power = 0;
+            Power = 10;
             switch (Type)
             {
                 case RoomType.Barracks:

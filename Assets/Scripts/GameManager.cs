@@ -56,6 +56,7 @@ using UnityEngine;
         selectionPanel = gameObject.GetComponent<SelectionPanel>();
     }
 
+
     public void UnselectAll()
     {
         foreach (Character item in Characters)
@@ -64,6 +65,7 @@ using UnityEngine;
         }
         SelectedCharacter = 0;
         selectionPanel.OnUnselection();
+        gameObject.GetComponent<RoomSelectionPanel>().CloseRoomSelectionPanel();
     }
     public void AddCharacter(Character newItem)
     {
