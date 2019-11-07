@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Interactable
   - Room
+  - Hallway
   layers:
   - Default
   - TransparentFX

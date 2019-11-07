@@ -143,21 +143,37 @@ public class TouchController : MonoBehaviour
                     }
                     else
                     {
-                        if (objectHit.tag == "Interactable")
+                        if (objectHit.tag == "Room")
                         {
                             objectHit.parent.GetComponent<Room>().OnRoomTouched();
                         }
-                       /* else
+                        else
                         {
-                            
-                        }*/
+                            if (objectHit.tag == "Hallway")
+                            {
+                                if (_gameManager.Characters[_gameManager.SelectedCharacter - 1].Job != 0)
+                                {
+                                    _gameManager.Characters[_gameManager.SelectedCharacter - 1].GoIdle();
+                                    _gameManager.UnselectAll();
+                                }
+                                else
+                                {
+                                    _gameManager.UnselectAll();
+                                    Debug.Log("No estoy trabajando");
+                                }
+                            }
+                        }
                     }
                 }
                 else //If a character is not selected
                 {
-                    if (objectHit.tag == "Interactable") //selecting a room
+                    if (objectHit.tag == "Room") //selecting a room
                     {
                         objectHit.parent.GetComponent<Room>().OnRoomSelected();
+                    }
+                    else
+                    {
+                        _gameManager.UnselectAll();
                     }
                 }
             }

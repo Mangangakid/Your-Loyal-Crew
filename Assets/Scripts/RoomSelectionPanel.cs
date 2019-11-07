@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class RoomSelectionPanel : MonoBehaviour
 {
-    private Room ActiveRoom;
+    public Room ActiveRoom;
     private GameManager gm;
     public GameObject Panel;
     public Text RoomTypeText;
@@ -26,24 +26,33 @@ public class RoomSelectionPanel : MonoBehaviour
 
     public void OpenSelectionPanel(Room NewRoom)
     {
-        ActiveRoom = NewRoom;
-        Panel.SetActive(true);
-        RoomTypeText.text = ActiveRoom.Type.ToString();
-        RoomImage.sprite = ActiveRoom.RoomThumbnail;
-        switch (ActiveRoom.Type)
+        if (NewRoom == ActiveRoom)
         {
-            case Room.RoomType.Barracks:
-                WorkersLine.SetActive(false);
-                SleepersLine.SetActive(true);
-                break;
-            case Room.RoomType.Infirmary:
-                WorkersLine.SetActive(true);
-                SleepersLine.SetActive(true);
-                break;
-            default:
-                WorkersLine.SetActive(true);
-                SleepersLine.SetActive(false);
-                break;
+            CloseRoomSelectionPanel();
+            ActiveRoom = null;
+        }
+        else
+        {
+            ActiveRoom = NewRoom;
+            Panel.SetActive(true);
+            RoomTypeText.text = ActiveRoom.Type.ToString();
+            RoomImage.sprite = ActiveRoom.RoomThumbnail;
+            switch (ActiveRoom.Type)
+            {
+                case Room.RoomType.Barracks:
+                    WorkersLine.SetActive(false);
+                    SleepersLine.SetActive(true);
+                    break;
+                case Room.RoomType.Infirmary:
+                    WorkersLine.SetActive(true);
+                    SleepersLine.SetActive(true);
+                    break;
+                default:
+                    WorkersLine.SetActive(true);
+                    SleepersLine.SetActive(false);
+                    break;
+            }
+
         }
     }
     

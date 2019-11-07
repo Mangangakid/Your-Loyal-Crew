@@ -142,7 +142,6 @@ public class Room : MonoBehaviour
     //Effect of Characters working in the room
     private void Working()
     {
-
         if (WorkingCharacters.Count > 0)
         {
             Power = 10;
@@ -188,6 +187,10 @@ public class Room : MonoBehaviour
                     }
                     break;
             }
+        }
+        else
+        {
+            Power = 10;
         }
     }
 

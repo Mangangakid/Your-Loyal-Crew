@@ -11,6 +11,7 @@ ScriptsOnlyBuild:
     - Room
     - RoomObject
     - RoomPanel
+    - RoomSelectionPanel
     - SceneLoader
     - ScrollbarTwoColors
     - SelectionPanel
@@ -70,8 +71,6 @@ ScriptsOnlyBuild:
       Script: {instanceID: 0}
     - Class: 104
       Script: {instanceID: 0}
-    - Class: 108
-      Script: {instanceID: 0}
     - Class: 114
       Script: {instanceID: 9658}
     - Class: 114
@@ -91,37 +90,39 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 10250}
     - Class: 114
-      Script: {instanceID: 10476}
+      Script: {instanceID: 10462}
     - Class: 114
-      Script: {instanceID: 10492}
+      Script: {instanceID: 10478}
     - Class: 114
-      Script: {instanceID: 10580}
+      Script: {instanceID: 10494}
     - Class: 114
-      Script: {instanceID: 10648}
+      Script: {instanceID: 10582}
     - Class: 114
-      Script: {instanceID: 10670}
+      Script: {instanceID: 10650}
     - Class: 114
-      Script: {instanceID: 10734}
+      Script: {instanceID: 10672}
     - Class: 114
-      Script: {instanceID: 10792}
+      Script: {instanceID: 10736}
     - Class: 114
-      Script: {instanceID: 10860}
+      Script: {instanceID: 10794}
     - Class: 114
-      Script: {instanceID: 10864}
+      Script: {instanceID: 10862}
     - Class: 114
-      Script: {instanceID: 10868}
+      Script: {instanceID: 10866}
     - Class: 114
-      Script: {instanceID: 10954}
+      Script: {instanceID: 10870}
     - Class: 114
-      Script: {instanceID: 11018}
+      Script: {instanceID: 10956}
     - Class: 114
-      Script: {instanceID: 11042}
+      Script: {instanceID: 11020}
     - Class: 114
-      Script: {instanceID: 11088}
+      Script: {instanceID: 11044}
     - Class: 114
-      Script: {instanceID: 11388}
+      Script: {instanceID: 11090}
     - Class: 114
-      Script: {instanceID: 11404}
+      Script: {instanceID: 11390}
+    - Class: 114
+      Script: {instanceID: 11406}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -190,19 +191,19 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 10376}
     - Class: 114
-      Script: {instanceID: 10580}
+      Script: {instanceID: 10582}
     - Class: 114
-      Script: {instanceID: 10670}
+      Script: {instanceID: 10672}
     - Class: 114
-      Script: {instanceID: 10860}
+      Script: {instanceID: 10862}
     - Class: 114
-      Script: {instanceID: 11042}
+      Script: {instanceID: 11044}
     - Class: 114
-      Script: {instanceID: 11176}
+      Script: {instanceID: 11178}
     - Class: 114
-      Script: {instanceID: 11388}
+      Script: {instanceID: 11390}
     - Class: 114
-      Script: {instanceID: 11404}
+      Script: {instanceID: 11406}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -474,6 +475,12 @@ ScriptsOnlyBuild:
     className: SignalTrack
   - hash:
       serializedVersion: 2
+      Hash: eb15adc8a5dfa05561daeedb05b1a303
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: RoomSelectionPanel
+  - hash:
+      serializedVersion: 2
       Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
     assemblyName: Unity.TextMeshPro.dll
     namespaceName: TMPro
@@ -486,7 +493,7 @@ ScriptsOnlyBuild:
     className: CameraFollow
   - hash:
       serializedVersion: 2
-      Hash: 16ede0462bd1963051c8c67903262028
+      Hash: d5d65cb5918d70aa94f5f0e3865f4124
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Room
@@ -642,7 +649,7 @@ ScriptsOnlyBuild:
     className: BeforeAfterTestCommandState
   - hash:
       serializedVersion: 2
-      Hash: 3ab96c156f5f13332033680e6a411ee7
+      Hash: a42f72f7a5848c032f7e2f170ad9c357
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: GameManager

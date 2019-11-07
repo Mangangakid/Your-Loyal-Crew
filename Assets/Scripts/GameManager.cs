@@ -66,6 +66,7 @@ using UnityEngine;
         SelectedCharacter = 0;
         selectionPanel.OnUnselection();
         gameObject.GetComponent<RoomSelectionPanel>().CloseRoomSelectionPanel();
+        gameObject.GetComponent<RoomSelectionPanel>().ActiveRoom = null;
     }
     public void AddCharacter(Character newItem)
     {

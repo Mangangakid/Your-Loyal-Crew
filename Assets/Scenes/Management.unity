@@ -3301,6 +3301,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e90b8287525174f4b8a460c8ef3453f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ActiveRoom: {fileID: 0}
   Panel: {fileID: 909928826}
   RoomTypeText: {fileID: 32372818}
   RoomImage: {fileID: 2010387366}
@@ -4149,7 +4150,6 @@ MonoBehaviour:
   WorkingCharacters: []
   SleepingCharacters: []
   RepairingCharacters: []
-  gm: {fileID: 0}
   RoomId: 0
   Anim: {fileID: 0}
 --- !u!4 &109710231
@@ -5264,11 +5264,11 @@ MonoBehaviour:
   characterName: Saitama
   HitPoints: 75
   Energy: 60
-  Strenght: 10
-  Dextrecity: 9
+  Strenght: 18
+  Dextrecity: 18
   Endurance: 18
-  Perception: 5
-  Intelligence: 18
+  Perception: 17
+  Intelligence: 8
   Thumbnail: {fileID: 21300000, guid: 3cb055c4fd8085c4490bd397744d1f37, type: 3}
   selectionArrow: {fileID: 810257990}
   selected: 0
@@ -8927,7 +8927,6 @@ MonoBehaviour:
   WorkingCharacters: []
   SleepingCharacters: []
   RepairingCharacters: []
-  gm: {fileID: 0}
   RoomId: 0
   Anim: {fileID: 0}
 --- !u!4 &258294262
@@ -9695,99 +9694,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 268547794}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &270613946
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 270613950}
-  - component: {fileID: 270613949}
-  - component: {fileID: 270613948}
-  - component: {fileID: 270613947}
-  m_Layer: 0
-  m_Name: Plane (1)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 12
-  m_IsActive: 1
---- !u!64 &270613947
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 270613946}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Convex: 0
-  m_CookingOptions: 14
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &270613948
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 270613946}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 7a0b65e16bb492a40bb92c2017a00767, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
---- !u!33 &270613949
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 270613946}
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
---- !u!4 &270613950
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 270613946}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -7}
-  m_LocalScale: {x: 0.5, y: 1, z: 0.40000007}
-  m_Children: []
-  m_Father: {fileID: 1852570430}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &275794995
 GameObject:
   m_ObjectHideFlags: 0
@@ -10323,7 +10229,7 @@ GameObject:
   - component: {fileID: 303231125}
   m_Layer: 0
   m_Name: Selection Plane
-  m_TagString: Interactable
+  m_TagString: Room
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 12
@@ -10563,7 +10469,7 @@ GameObject:
   - component: {fileID: 310040207}
   m_Layer: 0
   m_Name: Plane
-  m_TagString: Untagged
+  m_TagString: Hallway
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 12
@@ -10636,8 +10542,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 310040206}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0, z: 2.4674}
-  m_LocalScale: {x: 1, y: 1, z: 1.4931301}
+  m_LocalPosition: {x: 0, y: 0.001, z: 2.4674}
+  m_LocalScale: {x: 0.22000001, y: 1, z: 1.4931302}
   m_Children: []
   m_Father: {fileID: 1852570430}
   m_RootOrder: 0
@@ -11723,7 +11629,7 @@ GameObject:
   - component: {fileID: 343299720}
   m_Layer: 0
   m_Name: Idle Spot (4)
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -12644,7 +12550,7 @@ GameObject:
   - component: {fileID: 371854560}
   m_Layer: 0
   m_Name: Idle Spot (7)
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -12769,7 +12675,7 @@ GameObject:
   - component: {fileID: 374716638}
   m_Layer: 0
   m_Name: Selection Plane
-  m_TagString: Interactable
+  m_TagString: Room
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 12
@@ -12822,7 +12728,7 @@ GameObject:
   - component: {fileID: 378280556}
   m_Layer: 0
   m_Name: Idle Spot (3)
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -17553,7 +17459,7 @@ GameObject:
   - component: {fileID: 510050733}
   m_Layer: 0
   m_Name: Idle Spot (5)
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -22342,7 +22248,6 @@ MonoBehaviour:
   WorkingCharacters: []
   SleepingCharacters: []
   RepairingCharacters: []
-  gm: {fileID: 0}
   RoomId: 0
   Anim: {fileID: 0}
 --- !u!4 &635167506
@@ -23535,11 +23440,11 @@ MonoBehaviour:
   characterName: Shiina
   HitPoints: 73
   Energy: 60
-  Strenght: 5
-  Dextrecity: 5
-  Endurance: 15
-  Perception: 5
-  Intelligence: 5
+  Strenght: 8
+  Dextrecity: 12
+  Endurance: 12
+  Perception: 15
+  Intelligence: 17
   Thumbnail: {fileID: 21300000, guid: 9efe9b50189319246818533ec29d2e0b, type: 3}
   selectionArrow: {fileID: 1854243029}
   selected: 0
@@ -23847,7 +23752,7 @@ GameObject:
   - component: {fileID: 689838354}
   m_Layer: 0
   m_Name: Idle Spot (8)
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -25456,7 +25361,6 @@ MonoBehaviour:
   WorkingCharacters: []
   SleepingCharacters: []
   RepairingCharacters: []
-  gm: {fileID: 0}
   RoomId: 0
   Anim: {fileID: 0}
 --- !u!4 &726194014
@@ -26976,7 +26880,7 @@ GameObject:
   - component: {fileID: 764122625}
   m_Layer: 0
   m_Name: Idle Spot (1)
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -27687,7 +27591,7 @@ GameObject:
   - component: {fileID: 783659443}
   m_Layer: 0
   m_Name: Selection Plane
-  m_TagString: Interactable
+  m_TagString: Room
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 12
@@ -31188,7 +31092,7 @@ GameObject:
   - component: {fileID: 901794260}
   m_Layer: 0
   m_Name: Selection Plane
-  m_TagString: Interactable
+  m_TagString: Room
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 12
@@ -32947,7 +32851,7 @@ GameObject:
   - component: {fileID: 972354579}
   m_Layer: 0
   m_Name: Selection Plane
-  m_TagString: Interactable
+  m_TagString: Room
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 12
@@ -33313,7 +33217,7 @@ GameObject:
   - component: {fileID: 988079587}
   m_Layer: 0
   m_Name: Selection Plane
-  m_TagString: Interactable
+  m_TagString: Room
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 12
@@ -33833,15 +33737,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5eec58206c279784a94f91140033adc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterName: L
+  characterName: Edward
   HitPoints: 75
   Energy: 60
-  Strenght: 4
-  Dextrecity: 3
+  Strenght: 16
+  Dextrecity: 15
   Endurance: 16
-  Perception: 6
+  Perception: 14
   Intelligence: 18
-  Thumbnail: {fileID: 21300000, guid: 69d89122a4821cb43b54fb03541cb3bd, type: 3}
+  Thumbnail: {fileID: 21300000, guid: 68bb41a5a04eaee4ba3c5d495c44e951, type: 3}
   selectionArrow: {fileID: 1629476280}
   selected: 0
   Job: 0
@@ -38156,7 +38060,7 @@ GameObject:
   - component: {fileID: 1124468885}
   m_Layer: 0
   m_Name: Idle Spot (6)
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -42929,11 +42833,11 @@ MonoBehaviour:
   characterName: Misa
   HitPoints: 74
   Energy: 60
-  Strenght: 3
-  Dextrecity: 5
-  Endurance: 12
-  Perception: 6
-  Intelligence: 7
+  Strenght: 10
+  Dextrecity: 9
+  Endurance: 10
+  Perception: 16
+  Intelligence: 17
   Thumbnail: {fileID: 21300000, guid: 44ba183c8e8663640ab223aaf7deb898, type: 3}
   selectionArrow: {fileID: 400706094}
   selected: 0
@@ -44012,11 +43916,11 @@ MonoBehaviour:
   characterName: Fei
   HitPoints: 77
   Energy: 60
-  Strenght: 4
-  Dextrecity: 7
-  Endurance: 11
-  Perception: 5
-  Intelligence: 5
+  Strenght: 9
+  Dextrecity: 9
+  Endurance: 12
+  Perception: 15
+  Intelligence: 17
   Thumbnail: {fileID: 21300000, guid: 1349ac09bc90a0d4f8b379a14830f237, type: 3}
   selectionArrow: {fileID: 1932495379}
   selected: 0
@@ -44460,15 +44364,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5eec58206c279784a94f91140033adc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterName: Misa
+  characterName: Bulma
   HitPoints: 74
   Energy: 60
-  Strenght: 3
-  Dextrecity: 5
+  Strenght: 15
+  Dextrecity: 10
   Endurance: 12
-  Perception: 6
-  Intelligence: 7
-  Thumbnail: {fileID: 21300000, guid: 44ba183c8e8663640ab223aaf7deb898, type: 3}
+  Perception: 15
+  Intelligence: 18
+  Thumbnail: {fileID: 21300000, guid: 13aa209fbd2d89b4c8512c03f2e9d9bc, type: 3}
   selectionArrow: {fileID: 1757850156}
   selected: 0
   Job: 0
@@ -46242,10 +46146,10 @@ MonoBehaviour:
   characterName: L
   HitPoints: 75
   Energy: 60
-  Strenght: 4
-  Dextrecity: 3
-  Endurance: 16
-  Perception: 6
+  Strenght: 11
+  Dextrecity: 7
+  Endurance: 10
+  Perception: 18
   Intelligence: 18
   Thumbnail: {fileID: 21300000, guid: 69d89122a4821cb43b54fb03541cb3bd, type: 3}
   selectionArrow: {fileID: 238066656}
@@ -47041,15 +46945,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5eec58206c279784a94f91140033adc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterName: Shiina
+  characterName: Light
   HitPoints: 73
   Energy: 60
   Strenght: 5
   Dextrecity: 5
-  Endurance: 15
-  Perception: 5
-  Intelligence: 5
-  Thumbnail: {fileID: 21300000, guid: 9efe9b50189319246818533ec29d2e0b, type: 3}
+  Endurance: 10
+  Perception: 16
+  Intelligence: 18
+  Thumbnail: {fileID: 21300000, guid: b8fa6d41001b82d45b8c5531175f3179, type: 3}
   selectionArrow: {fileID: 437303604}
   selected: 0
   Job: 0
@@ -51582,7 +51486,7 @@ GameObject:
   - component: {fileID: 1507022537}
   m_Layer: 0
   m_Name: Idle Spot (2)
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -54013,7 +53917,7 @@ GameObject:
   - component: {fileID: 1572843765}
   m_Layer: 0
   m_Name: Idle Spot (9)
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -56929,15 +56833,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5eec58206c279784a94f91140033adc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterName: Fei
+  characterName: Yuno
   HitPoints: 77
   Energy: 60
-  Strenght: 4
+  Strenght: 9
   Dextrecity: 7
   Endurance: 11
-  Perception: 5
-  Intelligence: 5
-  Thumbnail: {fileID: 21300000, guid: 1349ac09bc90a0d4f8b379a14830f237, type: 3}
+  Perception: 15
+  Intelligence: 17
+  Thumbnail: {fileID: 21300000, guid: 573b90a23068611459fcefa7400d2e9c, type: 3}
   selectionArrow: {fileID: 919025613}
   selected: 0
   Job: 0
@@ -60445,7 +60349,6 @@ MonoBehaviour:
   WorkingCharacters: []
   SleepingCharacters: []
   RepairingCharacters: []
-  gm: {fileID: 0}
   RoomId: 0
   Anim: {fileID: 0}
 --- !u!4 &1751331006
@@ -62547,7 +62450,6 @@ MonoBehaviour:
   WorkingCharacters: []
   SleepingCharacters: []
   RepairingCharacters: []
-  gm: {fileID: 0}
   RoomId: 0
   Anim: {fileID: 0}
 --- !u!4 &1817893844
@@ -63473,8 +63375,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1852570430}
   m_Layer: 0
-  m_Name: Ground
-  m_TagString: Untagged
+  m_Name: Hallway
+  m_TagString: Hallway
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -63491,7 +63393,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 310040210}
-  - {fileID: 270613950}
   m_Father: {fileID: 1405595016}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -64112,7 +64013,7 @@ GameObject:
   - component: {fileID: 1863419647}
   m_Layer: 0
   m_Name: Selection Plane
-  m_TagString: Interactable
+  m_TagString: Room
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 12
@@ -66598,15 +66499,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5eec58206c279784a94f91140033adc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterName: Saitama
+  characterName: Sakura
   HitPoints: 75
   Energy: 60
-  Strenght: 10
-  Dextrecity: 9
-  Endurance: 18
-  Perception: 5
-  Intelligence: 18
-  Thumbnail: {fileID: 21300000, guid: 3cb055c4fd8085c4490bd397744d1f37, type: 3}
+  Strenght: 7
+  Dextrecity: 10
+  Endurance: 9
+  Perception: 18
+  Intelligence: 14
+  Thumbnail: {fileID: 21300000, guid: b14d79e01d42eb4409a8cf7eae2f535f, type: 3}
   selectionArrow: {fileID: 582702080}
   selected: 0
   Job: 0
@@ -74505,7 +74406,6 @@ MonoBehaviour:
   WorkingCharacters: []
   SleepingCharacters: []
   RepairingCharacters: []
-  gm: {fileID: 0}
   RoomId: 0
   Anim: {fileID: 0}
 --- !u!4 &2133067551
