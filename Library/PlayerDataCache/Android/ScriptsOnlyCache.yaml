@@ -5,6 +5,7 @@ ScriptsOnlyBuild:
     - CameraFollow
     - CameraRotator
     - Character
+    - CharacterPanel
     - EnergyManager
     - GameManager
     - PauseMenu
@@ -14,7 +15,6 @@ ScriptsOnlyBuild:
     - RoomSelectionPanel
     - SceneLoader
     - ScrollbarTwoColors
-    - SelectionPanel
     - ShowPanel
     - Styles
     - TouchController
@@ -271,12 +271,6 @@ ScriptsOnlyBuild:
     className: TMP_ScrollbarEventHandler
   - hash:
       serializedVersion: 2
-      Hash: 973246ca1512e0ff07945417b6121989
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: Room2
-  - hash:
-      serializedVersion: 2
       Hash: 20240431c815058690a3ba9bdfb91802
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
@@ -475,7 +469,7 @@ ScriptsOnlyBuild:
     className: SignalTrack
   - hash:
       serializedVersion: 2
-      Hash: eb15adc8a5dfa05561daeedb05b1a303
+      Hash: 9e207f3fdf42ab39b4231f30e784d234
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: RoomSelectionPanel
@@ -598,7 +592,7 @@ ScriptsOnlyBuild:
       Hash: 6942deb829a66d7817679c1c69ef9755
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
-    className: SelectionPanel
+    className: CharacterPanel
   - hash:
       serializedVersion: 2
       Hash: c1933cc0a2f4ff6eb13333347497beb3
@@ -649,7 +643,7 @@ ScriptsOnlyBuild:
     className: BeforeAfterTestCommandState
   - hash:
       serializedVersion: 2
-      Hash: a42f72f7a5848c032f7e2f170ad9c357
+      Hash: c972a9755ff24294fba9505da4c3e92f
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: GameManager

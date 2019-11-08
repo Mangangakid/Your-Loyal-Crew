@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SelectionPanel : MonoBehaviour
+public class CharacterPanel : MonoBehaviour
 {
     public GameObject ThePanelItself;
     public Image Thumbnail;

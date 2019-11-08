@@ -22,7 +22,7 @@ public class Character : MonoBehaviour
     public Room boundedRoom;
     private NavMeshAgent agent;
     private GameManager gm;
-    private SelectionPanel selectionPanel;
+    private CharacterPanel selectionPanel;
     public int CharacterId;
 
     // Sets up the character when is loaded
@@ -30,7 +30,7 @@ public class Character : MonoBehaviour
     {
         agent = gameObject.GetComponent<NavMeshAgent>();
         gm = GameManager.instance;
-        selectionPanel = gm.gameObject.GetComponent<SelectionPanel>();
+        selectionPanel = gm.gameObject.GetComponent<CharacterPanel>();
         gm.AddCharacter(this);
         CharacterId = gm.Characters.Count;
     }

@@ -4,7 +4,7 @@ using UnityEngine;
     
     public class GameManager : MonoBehaviour
 {
-
+    public GameObject MapCamera;
     public static GameManager instance = null;              //Static instance of GameManager which allows it to be accessed by any other script.
     public List<Character> Characters = new List<Character>();
     public List<Room> Rooms = new List<Room>();
@@ -13,7 +13,7 @@ using UnityEngine;
     public int NextSpot;
     public int SelectedCharacter=0;
     public Room SelectedRoom;
-    public SelectionPanel selectionPanel;
+    public CharacterPanel selectionPanel;
     [Space]
     [Header("Delays")]
     [Range(0.1f, 5f)]
@@ -53,7 +53,7 @@ using UnityEngine;
     void InitGame()
     {
         NextSpot = 0;
-        selectionPanel = gameObject.GetComponent<SelectionPanel>();
+        selectionPanel = gameObject.GetComponent<CharacterPanel>();
     }
 
 
@@ -135,5 +135,9 @@ using UnityEngine;
     public void PauseOff()
     {
         Time.timeScale = 1f;
+    }
+    public void ToggleMap()
+    {
+        MapCamera.SetActive(!MapCamera.activeInHierarchy);
     }
 }

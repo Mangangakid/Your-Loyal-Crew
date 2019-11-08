@@ -17,7 +17,9 @@ public class RoomSelectionPanel : MonoBehaviour
     public GameObject SleepersLine;
     public Text SleepersText;
     public Text RepairmenText;
-    
+    public RectTransform HitPointsBar;
+    public RectTransform PowerBar;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -66,12 +68,14 @@ public class RoomSelectionPanel : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Panel.activeInHierarchy)
+        if ((Panel.activeInHierarchy)&&(ActiveRoom!=null))
         {
             PowerText.text = ActiveRoom.Power.ToString() + " %";
             WorkersText.text = ActiveRoom.WorkingCharacters.Count.ToString();
             SleepersText.text = ActiveRoom.SleepingCharacters.Count.ToString();
             RepairmenText.text = ActiveRoom.RepairingCharacters.Count.ToString();
+            HitPointsBar.localScale = new Vector3(1f, ActiveRoom.Integrity / 100f, 1f);
+            PowerBar.localScale = new Vector3(1f, ActiveRoom.Power / 100f, 1f);
         }
     }
 }
